@@ -1,0 +1,4 @@
+<key>NSBluetoothAlwaysUsageDescription</key>
+<string>La aplicación necesita Bluetooth para conectar con la impresora térmica.</string>
+<key>NSBluetoothPeripheralUsageDescription</key>
+<string>La aplicación necesita Bluetooth para conectar con la impresora térmica.</string>
