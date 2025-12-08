@@ -17,8 +17,8 @@ public class ThermalPrinterPlugin: NSObject, FlutterPlugin, CBCentralManagerDele
     var scannedPeripherals: [String: CBPeripheral] = [:]
     
     public static func register(with registrar: FlutterPluginRegistrar) {
-        let channel = FlutterMethodChannel(name: "blue_thermal_printer/methods", binaryMessenger: registrar.messenger())
-        let stateChannel = FlutterEventChannel(name: "blue_thermal_printer/state", binaryMessenger: registrar.messenger())
+        let channel = FlutterMethodChannel(name: "blue_blue_thermal_printer_plus/methods", binaryMessenger: registrar.messenger())
+        let stateChannel = FlutterEventChannel(name: "blue_blue_thermal_printer_plus/state", binaryMessenger: registrar.messenger())
         
         let instance = ThermalPrinterPlugin()
         instance.methodChannel = channel

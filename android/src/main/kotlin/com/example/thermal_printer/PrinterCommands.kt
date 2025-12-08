@@ -1,4 +1,4 @@
-package com.bexsoluciones.thermal_printer
+package com.bexsoluciones.blue_thermal_printer_plus
 
 /**
  * Comandos ESC/POS estándar para impresoras térmicas

@@ -1,6 +1,4 @@
-package com.bexsoluciones.thermal_printer
-
-package id.kakzaki.blue_thermal_printer // Cambia esto al paquete de tu nuevo plugin
+package com.bexsoluciones.blue_thermal_printer_plus
 
 import android.Manifest
 import android.app.Activity
@@ -47,8 +45,8 @@ import java.io.StringWriter
 import java.util.UUID
 
 
-/** ThermalPrinterPlugin */
-class ThermalPrinterPlugin : lutterPlugin, ActivityAware, MethodCallHandler, RequestPermissionsResultListener {
+/** BlueThermalPrinterPlusPlugin */
+class BlueThermalPrinterPlusPlugin : lutterPlugin, ActivityAware, MethodCallHandler, RequestPermissionsResultListener {
     private var pluginBinding: FlutterPlugin.FlutterPluginBinding? = null
     private var activityBinding: ActivityPluginBinding? = null
     private var context: Context? = null
@@ -71,7 +69,7 @@ class ThermalPrinterPlugin : lutterPlugin, ActivityAware, MethodCallHandler, Req
 
     companion object {
         private const val TAG = "BThermalPrinterPlugin"
-        private const val NAMESPACE = "blue_thermal_printer"
+        private const val NAMESPACE = "blue_blue_thermal_printer_plus"
         private const val REQUEST_COARSE_LOCATION_PERMISSIONS = 1451
         private val MY_UUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
     }

@@ -1,4 +1,4 @@
-# thermal_printer
+# blue_thermal_printer_plus
 
 A new Flutter plugin project.
 

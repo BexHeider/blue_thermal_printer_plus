@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'bluetooth_device.dart';
 
 /// Clase principal para manejar la impresora térmica Bluetooth
-class ThermalPrinter {
+class BlueThermalPrinterPlus {
   static const int stateOff = 10;
   static const int stateTurningOn = 11;
   static const int stateOn = 12;
@@ -19,7 +19,7 @@ class ThermalPrinter {
   static const int disconnected = 0;
   static const int disconnectRequested = 2;
 
-  static const String namespace = 'blue_thermal_printer';
+  static const String namespace = 'blue_blue_thermal_printer_plus';
 
   // Canales de comunicación con Kotlin
   final MethodChannel _channel = const MethodChannel('$namespace/methods');
@@ -27,9 +27,9 @@ class ThermalPrinter {
   final EventChannel _readChannel = const EventChannel('$namespace/read');
 
   // Singleton pattern (opcional, pero útil)
-  static final ThermalPrinter _instance = ThermalPrinter._internal();
-  factory ThermalPrinter() => _instance;
-  ThermalPrinter._internal();
+  static final BlueThermalPrinterPlus _instance = BlueThermalPrinterPlus._internal();
+  factory BlueThermalPrinterPlus() => _instance;
+  BlueThermalPrinterPlus._internal();
 
   /// Flujo de estados de la conexión Bluetooth (Conectado/Desconectado/Apagado)
   Stream<int> get onStateChanged {

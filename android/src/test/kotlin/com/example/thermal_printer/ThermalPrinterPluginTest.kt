@@ -1,4 +1,4 @@
-package com.example.thermal_printer
+package com.example.blue_thermal_printer_plus
 
 import io.flutter.plugin.common.MethodCall
 import io.flutter.plugin.common.MethodChannel

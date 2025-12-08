@@ -1,24 +1,24 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:thermal_printer/bluetooth_device.dart';
+import 'package:blue_thermal_printer_plus/bluetooth_device.dart';
 // Asegúrate de que el import coincida con el nombre de tu proyecto en pubspec.yaml
-import 'package:thermal_printer/thermal_printer.dart';
+import 'package:blue_thermal_printer_plus/blue_thermal_printer_plus.dart';
 
 void main() {
   // Aseguramos que el entorno de test de Flutter esté inicializado
   final binding = TestWidgetsFlutterBinding.ensureInitialized();
 
   // Esta es la instancia de tu clase principal
-  late ThermalPrinter printer;
+  late BlueThermalPrinterPlus printer;
   
-  // Definimos el canal exactamente como está en tu código Dart ('blue_thermal_printer/methods')
-  const MethodChannel channel = MethodChannel('thermal_printer/methods');
+  // Definimos el canal exactamente como está en tu código Dart ('blue_blue_thermal_printer_plus/methods')
+  const MethodChannel channel = MethodChannel('blue_thermal_printer_plus/methods');
 
   // Lista para guardar las llamadas que hace el plugin (para verificar qué envió)
   final List<MethodCall> log = <MethodCall>[];
 
   setUp(() {
-    printer = ThermalPrinter();
+    printer = BlueThermalPrinterPlus();
     log.clear();
 
     // INTERCEPTAMOS las llamadas al canal nativo (Mocking)

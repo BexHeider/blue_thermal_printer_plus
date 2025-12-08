@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:thermal_printer/bluetooth_device.dart';
-import 'package:thermal_printer/thermal_printer.dart'; 
+import 'package:blue_thermal_printer_plus/bluetooth_device.dart';
+import 'package:blue_thermal_printer_plus/blue_thermal_printer_plus.dart'; 
 
 void main() {
   runApp(const MyApp());
@@ -17,7 +17,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   // Instancia de tu clase principal
-  final ThermalPrinter bluetooth = ThermalPrinter();
+  final BlueThermalPrinterPlus bluetooth = BlueThermalPrinterPlus();
 
   List<BluetoothDevice> _devices = [];
   BluetoothDevice? _device;
@@ -41,31 +41,31 @@ class _MyAppState extends State<MyApp> {
     bluetooth.onStateChanged.listen((state) {
       // Actualizar estado según los eventos de Kotlin
       switch (state) {
-        case ThermalPrinter.connected:
+        case BlueThermalPrinterPlus.connected:
           setState(() {
             _connected = true;
             print("bluetooth device state: connected");
           });
           break;
-        case ThermalPrinter.disconnected:
+        case BlueThermalPrinterPlus.disconnected:
           setState(() {
             _connected = false;
             print("bluetooth device state: disconnected");
           });
           break;
-        case ThermalPrinter.disconnectRequested:
+        case BlueThermalPrinterPlus.disconnectRequested:
           setState(() {
             _connected = false;
             print("bluetooth device state: disconnect requested");
           });
           break;
-        case ThermalPrinter.stateOff:
+        case BlueThermalPrinterPlus.stateOff:
           setState(() {
             _connected = false;
             print("bluetooth state: off");
           });
           break;
-        case ThermalPrinter.stateOn:
+        case BlueThermalPrinterPlus.stateOn:
           setState(() {
             _connected = false;
             print("bluetooth state: on");

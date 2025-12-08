@@ -1,3 +1,3 @@
 ## 0.0.1
 
-* TODO: Describe initial release.
+* Lanzamiento inicial con soporte para Android 12 y Null Safety.

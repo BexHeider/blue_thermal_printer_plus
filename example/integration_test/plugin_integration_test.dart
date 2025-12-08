@@ -1,14 +1,14 @@
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 // Asegúrate de importar tu archivo correcto
-import 'package:thermal_printer/thermal_printer.dart';
+import 'package:blue_thermal_printer_plus/blue_thermal_printer_plus.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
 
   testWidgets('Verificar si el Bluetooth está disponible', (WidgetTester tester) async {
     // 1. Instanciar tu clase real
-    final ThermalPrinter plugin = ThermalPrinter();
+    final BlueThermalPrinterPlus plugin = BlueThermalPrinterPlus();
     
     // 2. Llamar a un método que sí existe
     final bool? isAvailable = await plugin.isAvailable;

@@ -1,6 +1,6 @@
-# thermal_printer_example
+# blue_thermal_printer_plus_example
 
-Demonstrates how to use the thermal_printer plugin.
+Demonstrates how to use the blue_thermal_printer_plus plugin.
 
 ## Getting Started
 
