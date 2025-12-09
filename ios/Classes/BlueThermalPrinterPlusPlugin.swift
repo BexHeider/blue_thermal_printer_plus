@@ -2,7 +2,7 @@ import Flutter
 import UIKit
 import CoreBluetooth
 
-public class ThermalPrinterPlugin: NSObject, FlutterPlugin, CBCentralManagerDelegate, CBPeripheralDelegate {
+public class BlueThermalPrinterPlusPlugin: NSObject, FlutterPlugin, CBCentralManagerDelegate, CBPeripheralDelegate {
     
     // Variables principales
     var centralManager: CBCentralManager!
@@ -17,10 +17,10 @@ public class ThermalPrinterPlugin: NSObject, FlutterPlugin, CBCentralManagerDele
     var scannedPeripherals: [String: CBPeripheral] = [:]
     
     public static func register(with registrar: FlutterPluginRegistrar) {
-        let channel = FlutterMethodChannel(name: "blue_blue_thermal_printer_plus/methods", binaryMessenger: registrar.messenger())
-        let stateChannel = FlutterEventChannel(name: "blue_blue_thermal_printer_plus/state", binaryMessenger: registrar.messenger())
+        let channel = FlutterMethodChannel(name: "blue_thermal_printer_plus/methods", binaryMessenger: registrar.messenger())
+        let stateChannel = FlutterEventChannel(name: "blue_thermal_printer_plus/state", binaryMessenger: registrar.messenger())
         
-        let instance = ThermalPrinterPlugin()
+        let instance = BlueThermalPrinterPlusPlugin()
         instance.methodChannel = channel
         instance.centralManager = CBCentralManager(delegate: instance, queue: nil)
         

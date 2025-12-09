@@ -19,7 +19,7 @@ class BlueThermalPrinterPlus {
   static const int disconnected = 0;
   static const int disconnectRequested = 2;
 
-  static const String namespace = 'blue_blue_thermal_printer_plus';
+  static const String namespace = 'blue_thermal_printer_plus';
 
   // Canales de comunicación con Kotlin
   final MethodChannel _channel = const MethodChannel('$namespace/methods');

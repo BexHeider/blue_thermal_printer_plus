@@ -36,9 +36,9 @@ flutter:
     platforms:
       android:
         package: com.bexsoluciones.blue_thermal_printer_plus
-        pluginClass: ThermalPrinterPlugin
+        pluginClass: BlueThermalPrinterPlusPlugin
       ios:
-        pluginClass: ThermalPrinterPlugin
+        pluginClass: BlueThermalPrinterPlusPlugin
 
   # To add assets to your plugin package, add an assets section, like this:
   # assets:
