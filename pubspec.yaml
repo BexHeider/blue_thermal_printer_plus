@@ -1,6 +1,6 @@
 name: blue_thermal_printer_plus
 description: "Un plugin moderno para impresoras térmicas Bluetooth (ESC/POS). Soporta Android 12+ y Null Safety."
-version: 0.0.4
+version: 0.0.5
 homepage: https://github.com/BexHeider/blue_thermal_printer_plus
 repository: https://github.com/BexHeider/blue_thermal_printer_plus
 environment:

@@ -46,7 +46,7 @@ import java.util.UUID
 
 
 /** BlueThermalPrinterPlusPlugin */
-class BlueThermalPrinterPlusPlugin : lutterPlugin, ActivityAware, MethodCallHandler, RequestPermissionsResultListener {
+class BlueThermalPrinterPlusPlugin : FlutterPlugin, ActivityAware, MethodCallHandler, RequestPermissionsResultListener {
     private var pluginBinding: FlutterPlugin.FlutterPluginBinding? = null
     private var activityBinding: ActivityPluginBinding? = null
     private var context: Context? = null
