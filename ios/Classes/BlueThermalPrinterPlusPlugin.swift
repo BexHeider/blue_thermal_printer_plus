@@ -185,7 +185,7 @@ public class BlueThermalPrinterPlusPlugin: NSObject, FlutterPlugin, CBCentralMan
 }
 
 // Extensión para EventChannel (Estado)
-extension ThermalPrinterPlugin: FlutterStreamHandler {
+extension BlueThermalPrinterPlusPlugin: FlutterStreamHandler {
     public func onListen(withArguments arguments: Any?, eventSink events: @escaping FlutterEventSink) -> FlutterError? {
         self.stateEventSink = events
         return nil
