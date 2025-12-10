@@ -1,3 +1,3 @@
-## 0.0.1
+## 0.0.6
 
-* Lanzamiento inicial con soporte para Android 12 y Null Safety.
+Fix namespace in BlueThermalPrinterPlusPlugin class for consistency with plugin naming conventions.
