@@ -69,7 +69,7 @@ class BlueThermalPrinterPlusPlugin : FlutterPlugin, ActivityAware, MethodCallHan
 
     companion object {
         private const val TAG = "BThermalPrinterPlugin"
-        private const val NAMESPACE = "blue_blue_thermal_printer_plus"
+        private const val NAMESPACE = "blue_thermal_printer_plus"
         private const val REQUEST_COARSE_LOCATION_PERMISSIONS = 1451
         private val MY_UUID: UUID = UUID.fromString("00001101-0000-1000-8000-00805F9B34FB")
     }
