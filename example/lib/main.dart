@@ -44,31 +44,26 @@ class _MyAppState extends State<MyApp> {
         case BlueThermalPrinterPlus.connected:
           setState(() {
             _connected = true;
-            print("bluetooth device state: connected");
           });
           break;
         case BlueThermalPrinterPlus.disconnected:
           setState(() {
             _connected = false;
-            print("bluetooth device state: disconnected");
           });
           break;
         case BlueThermalPrinterPlus.disconnectRequested:
           setState(() {
             _connected = false;
-            print("bluetooth device state: disconnect requested");
           });
           break;
         case BlueThermalPrinterPlus.stateOff:
           setState(() {
             _connected = false;
-            print("bluetooth state: off");
           });
           break;
         case BlueThermalPrinterPlus.stateOn:
           setState(() {
             _connected = false;
-            print("bluetooth state: on");
           });
           break;
       }
@@ -200,9 +195,6 @@ class _MyAppState extends State<MyApp> {
           setState(() => _connected = true);
         }
       });
-    } else {
-      // Mostrar mensaje: No hay dispositivo seleccionado
-      print('No device selected');
     }
   }
 
