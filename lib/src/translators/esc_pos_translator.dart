@@ -3,6 +3,7 @@ import 'printer_translator.dart';
 
 class EscPosTranslator extends PrinterTranslator {
   List<int> _bytes = [];
+  int _currentY = 50;
 
   @override
   List<int> get bytes => _bytes;
@@ -10,8 +11,9 @@ class EscPosTranslator extends PrinterTranslator {
   @override
   void reset() {
     _bytes = [];
+    _currentY = 50;
     // Comando de inicialización (ESC @)
-    _bytes.addAll([0x1B, 0x40]); 
+    _bytes.addAll([0x1B, 0x40]);
   }
 
   @override
@@ -29,9 +31,9 @@ class EscPosTranslator extends PrinterTranslator {
 
     // 3. Texto (Convertir String a bytes)
     _bytes.addAll(text.codeUnits);
-    
+
     // 4. Salto de línea automático tras el texto
-    _bytes.add(0x0A); 
+    _bytes.add(0x0A);
   }
 
   @override
@@ -47,8 +49,28 @@ class EscPosTranslator extends PrinterTranslator {
 
   @override
   void addImage(Uint8List imageBytes) {
-    // Aquí iría la lógica de conversión de imagen a mapa de bits ESC/POS
-    // Es un proceso complejo de "bit-banging"
-    // Por ahora, podrías dejar un placeholder o usar una librería de soporte
+    // 1. En un escenario real, aquí procesarías la imagen
+    // (usando el paquete 'image' de Dart) para convertirla a monocromo.
+
+    // Supongamos que ya tenemos el ancho en bytes (width / 8)
+    // y el alto de la imagen.
+    int widthInDots = 384; // Ejemplo: ancho estándar de 58mm
+    int byteWidth = (widthInDots / 8).ceil();
+    int height = 100; // Ejemplo
+
+    // El comando EG sigue este formato:
+    // EG {byteWidth} {height} {x} {y} {data}
+    String command = "EG $byteWidth $height 0 $_currentY ";
+
+    _bytes.addAll(command.codeUnits);
+
+    // 2. Aquí se añaden los bytes crudos del mapa de bits
+    // Nota: Estos bytes deben ser 1 para negro y 0 para blanco
+    _bytes.addAll(imageBytes);
+
+    _bytes.addAll("\r\n".codeUnits);
+
+    // 3. Actualizar la posición Y para que el siguiente texto no se encime
+    _currentY += height + 20;
   }
 }

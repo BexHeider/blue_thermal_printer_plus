@@ -20,7 +20,7 @@ class ZplTranslator extends PrinterTranslator {
   void addText(String text, {int size = 0, int align = 0}) {
     // 1. Configurar Fuente según el tamaño
     // ^CFf,h,w (f: fuente, h: alto, w: ancho)
-    String fontSize = "^CF0,30,30"; 
+    String fontSize = "^CF0,30,30";
     int increment = _lineHeight;
 
     if (size == 1) {
@@ -59,8 +59,26 @@ class ZplTranslator extends PrinterTranslator {
 
   @override
   void addImage(Uint8List imageBytes) {
-    // Las imágenes en Zebra usan el comando ^GF (Graphic Field)
-    // Requiere convertir los bytes a una cadena Hexadecimal comprimida.
-    // Por ahora, puedes dejarlo pendiente o lanzar una excepción.
+    // En ZPL, las imágenes se manejan por ancho en bytes (puntos / 8)
+    // Suponiendo un ancho estándar de 384 puntos (48 bytes)
+    int widthInDots = 384;
+    int bytesPerRow = (widthInDots / 8).ceil();
+    int height = (imageBytes.length / bytesPerRow).floor();
+    int totalBytes = imageBytes.length;
+
+    // Comando ^GF (Graphic Field)
+    // ^GFA,totalBytes,totalBytes,bytesPerRow,data
+    _buffer.write("^FO0,$_currentY"); // Posición donde inicia la imagen
+    _buffer.write("^GFA,$totalBytes,$totalBytes,$bytesPerRow,");
+
+    // Los datos deben enviarse en formato Hexadecimal
+    for (int byte in imageBytes) {
+      _buffer.write(byte.toRadixString(16).padLeft(2, '0').toUpperCase());
+    }
+
+    _buffer.write("^FS"); // Fin de sección de imagen
+
+    // Actualizamos Y para que lo siguiente no se encime
+    _currentY += height + 20;
   }
 }

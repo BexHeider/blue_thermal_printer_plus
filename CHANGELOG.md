@@ -6,3 +6,8 @@ Update version to 0.0.7 in pubspec.yaml, correct original work attribution in LI
 
 Refactor: Rename `printReceipt` to `print`, add `paperCut` support, and enhance iOS ESC/POS command generation.
 
+## 0.0.9
+
+Add support for image printing in CPCL, ESC/POS, and ZPL translators.
+
+
