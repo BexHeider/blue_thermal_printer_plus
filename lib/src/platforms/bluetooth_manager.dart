@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 import 'package:flutter/services.dart';
 import '../models/bluetooth_device.dart';
 
@@ -41,6 +42,42 @@ class BluetoothManager {
   /// Este es el método más importante: envía los comandos finales (ESC/POS, ZPL, CPCL)
   Future<dynamic> writeBytes(Uint8List bytes) =>
       _methodChannel.invokeMethod('writeBytes', {'message': bytes});
+
+  Future<dynamic> paperCut() => _methodChannel.invokeMethod('paperCut');
+
+  Future<dynamic> printNewLine() => _methodChannel.invokeMethod('printNewLine');
+
+  Future<dynamic> printCustom(
+    String message,
+    int size,
+    int align, {
+    String charset = "UTF-8",
+  }) async {
+    if (Platform.isAndroid) {
+      return _methodChannel.invokeMethod('printCustom', {
+        'message': message,
+        'size': size,
+        'align': align,
+        'charset': charset,
+      });
+    } else {
+      // Para iOS, convertimos a comandos ESC/POS aquí en Dart
+      List<int> bytes = [];
+
+      // 1. Tamaño
+      bytes.addAll([0x1D, 0x21, size == 0 ? 0x00 : 0x11]);
+
+      // 2. Alineación (0: Left, 1: Center, 2: Right)
+      bytes.addAll([0x1B, 0x61, align]);
+
+      // 3. Texto
+      bytes.addAll(message.codeUnits);
+      bytes.addAll([0x0A]); // Salto de línea
+
+      // Enviamos bytes crudos a Swift
+      return writeBytes(Uint8List.fromList(bytes));
+    }
+  }
 
   /// Abre la configuración de Bluetooth del sistema
   Future<bool?> openSettings() async =>

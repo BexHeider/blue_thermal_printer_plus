@@ -1,4 +1,6 @@
 import 'dart:typed_data';
+import 'package:flutter/foundation.dart';
+
 import 'platforms/bluetooth_manager.dart';
 import 'models/bluetooth_device.dart';
 import 'models/print_item.dart';
@@ -31,10 +33,12 @@ class BlueThermalPrinterPlus {
 
   // --- EL MÉTODO DE IMPRESIÓN MAESTRO ---
 
-  Future<void> printReceipt({
+  Future<void> print({
     required List<PrintItem> items,
     required PrinterProtocol protocol,
   }) async {
+    debugPrint("Protocolo: $protocol");
+
     // 1. Seleccionar el traductor según el protocolo configurado
     PrinterTranslator translator;
     switch (protocol) {
@@ -52,6 +56,7 @@ class BlueThermalPrinterPlus {
     // 2. Limpiar buffer y procesar cada item
     translator.reset();
     for (var item in items) {
+      debugPrint("Item: ${item.type}");
       switch (item.type) {
         case PrintItemType.text:
           translator.addText(item.text!, size: item.size, align: item.align);
@@ -62,6 +67,9 @@ class BlueThermalPrinterPlus {
         case PrintItemType.newLine:
           translator.addNewLine();
           break;
+        case PrintItemType.paperCut:
+          translator.addCut();
+          break;
         default:
           break;
       }
@@ -69,6 +77,7 @@ class BlueThermalPrinterPlus {
 
     // 3. Enviar los bytes finales al hardware a través del Manager
     final finalBytes = Uint8List.fromList(translator.bytes);
+    debugPrint("Bytes finales: ${finalBytes.length}");
     await _manager.writeBytes(finalBytes);
   }
 }

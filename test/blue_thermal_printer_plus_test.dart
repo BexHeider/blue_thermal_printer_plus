@@ -1,7 +1,5 @@
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:blue_thermal_printer_plus/bluetooth_device.dart';
-// Asegúrate de que el import coincida con el nombre de tu proyecto en pubspec.yaml
 import 'package:blue_thermal_printer_plus/blue_thermal_printer_plus.dart';
 
 void main() {
@@ -10,9 +8,11 @@ void main() {
 
   // Esta es la instancia de tu clase principal
   late BlueThermalPrinterPlus printer;
-  
+
   // Definimos el canal exactamente como está en tu código Dart ('blue_blue_thermal_printer_plus/methods')
-  const MethodChannel channel = MethodChannel('blue_thermal_printer_plus/methods');
+  const MethodChannel channel = MethodChannel(
+    'blue_thermal_printer_plus/methods',
+  );
 
   // Lista para guardar las llamadas que hace el plugin (para verificar qué envió)
   final List<MethodCall> log = <MethodCall>[];
@@ -22,32 +22,35 @@ void main() {
     log.clear();
 
     // INTERCEPTAMOS las llamadas al canal nativo (Mocking)
-    binding.defaultBinaryMessenger.setMockMethodCallHandler(
-      channel,
-      (MethodCall methodCall) async {
-        // Guardamos la llamada para verificarla luego
-        log.add(methodCall);
+    binding.defaultBinaryMessenger.setMockMethodCallHandler(channel, (
+      MethodCall methodCall,
+    ) async {
+      // Guardamos la llamada para verificarla luego
+      log.add(methodCall);
 
-        // Simulamos respuestas nativas según el método invocado
-        switch (methodCall.method) {
-          case 'isAvailable':
-            return true;
-          case 'isConnected':
-            return false;
-          case 'getBondedDevices':
-            return [
-              {'name': 'Impresora Test', 'address': 'AA:BB:CC:DD:EE:FF', 'type': 0},
-              {'name': 'Impresora 2', 'address': '00:11:22:33:44:55', 'type': 1}
-            ];
-          case 'connect':
-            return true;
-          case 'printCustom':
-            return true;
-          default:
-            return null;
-        }
-      },
-    );
+      // Simulamos respuestas nativas según el método invocado
+      switch (methodCall.method) {
+        case 'isAvailable':
+          return true;
+        case 'isConnected':
+          return false;
+        case 'getBondedDevices':
+          return [
+            {
+              'name': 'Impresora Test',
+              'address': 'AA:BB:CC:DD:EE:FF',
+              'type': 0,
+            },
+            {'name': 'Impresora 2', 'address': '00:11:22:33:44:55', 'type': 1},
+          ];
+        case 'connect':
+          return true;
+        case 'printCustom':
+          return true;
+        default:
+          return null;
+      }
+    });
   });
 
   tearDown(() {
@@ -63,11 +66,11 @@ void main() {
 
   test('getBondedDevices devuelve una lista de BluetoothDevice', () async {
     final devices = await printer.getBondedDevices();
-    
+
     expect(devices.length, 2);
     expect(devices.first.name, 'Impresora Test');
     expect(devices.first.address, 'AA:BB:CC:DD:EE:FF');
-    
+
     expect(log, <Matcher>[isMethodCall('getBondedDevices', arguments: null)]);
   });
 
@@ -76,20 +79,23 @@ void main() {
     await printer.connect(device);
 
     expect(log, <Matcher>[
-      isMethodCall('connect', arguments: {'address': 'AA:BB:CC:DD:EE:FF'})
+      isMethodCall('connect', arguments: {'address': 'AA:BB:CC:DD:EE:FF'}),
     ]);
   });
 
   test('printCustom envía los argumentos correctos', () async {
-    await printer.printCustom("Hola Mundo", 1, 1);
+    await printer.print(items: [], protocol: PrinterProtocol.escPos);
 
     expect(log, <Matcher>[
-      isMethodCall('printCustom', arguments: {
-        'message': 'Hola Mundo',
-        'size': 1,
-        'align': 1,
-        'charset': 'UTF-8' // Valor por defecto
-      })
+      isMethodCall(
+        'printCustom',
+        arguments: {
+          'message': 'Hola Mundo',
+          'size': 1,
+          'align': 1,
+          'charset': 'UTF-8', // Valor por defecto
+        },
+      ),
     ]);
   });
 }

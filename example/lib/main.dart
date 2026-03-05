@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 import 'package:flutter/services.dart';
-import 'package:blue_thermal_printer_plus/bluetooth_device.dart';
 import 'package:blue_thermal_printer_plus/blue_thermal_printer_plus.dart';
 
 void main() {
@@ -209,6 +208,7 @@ class _MyAppState extends State<MyApp> {
 
   // --- LÓGICA DE IMPRESIÓN DE PRUEBA ---
   Future<void> _printTestTicket() async {
+    print("Imprimiendo ticket de prueba");
     // Verificar conexión primero
     if ((await bluetooth.isConnected) == true) {
       // Creamos la lista de items (Independiente del lenguaje)
@@ -229,11 +229,11 @@ class _MyAppState extends State<MyApp> {
         PrintItem.text("Gracias por su compra", align: 1),
 
         PrintItem(type: PrintItemType.newLine),
-        PrintItem(type: PrintItemType.newLine),
+        PrintItem(type: PrintItemType.paperCut),
       ];
 
       // Llamamos al método maestro del paquete
-      await bluetooth.printReceipt(items: receipt, protocol: _selectedProtocol);
+      await bluetooth.print(items: receipt, protocol: _selectedProtocol);
     }
   }
 }
