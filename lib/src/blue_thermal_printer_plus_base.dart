@@ -36,6 +36,7 @@ class BlueThermalPrinterPlus {
   Future<void> print({
     required List<PrintItem> items,
     required PrinterProtocol protocol,
+    int widthDots = 384,
   }) async {
     debugPrint("Protocolo: $protocol");
 
@@ -54,7 +55,9 @@ class BlueThermalPrinterPlus {
     }
 
     // 2. Limpiar buffer y procesar cada item
+    translator.paperWidth = widthDots;
     translator.reset();
+
     for (var item in items) {
       debugPrint("Item: ${item.type}");
       switch (item.type) {

@@ -14,5 +14,10 @@ Add support for image printing in CPCL, ESC/POS, and ZPL translators.
 
 ajust font size zpl translator
 
+## 0.0.11
+
+ajust font size esc pos translator
+
+
 
 
