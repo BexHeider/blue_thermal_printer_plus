@@ -11,55 +11,79 @@ class CpclTranslator extends PrinterTranslator {
   @override
   void reset() {
     _bytes = [];
-    _currentY = 50;
+    _currentY = 30; // Un margen inicial más limpio
   }
 
   @override
   void addText(String text, {int size = 0, int align = 0}) {
-    // Definimos fuentes y anchos de caracteres aproximados
-    // Fuente 7, tamaño 0 tiene aprox 12 puntos de ancho por carácter
-    // Fuente 7, tamaño 1 tiene aprox 24 puntos
-    String font = "7";
-    String fontSize = (size == 1) ? "1" : "0";
-    int charWidth = (size == 1) ? 24 : 12;
+    // 1. Selección dinámica de fuente y tamaño según el papel
+    // CPCL maneja fuentes residentes (0, 1, 2, 4, 5, 7)
+    // Usaremos la fuente 0 o 7 que son las más estándar
+    String font = "0";
+    int fontHeight;
+    int charWidth;
 
-    int xPos = 10; // Margen izquierdo por defecto
+    // Escalamiento basado en el ancho del papel
+    bool isWidePaper = paperWidth > 400;
 
-    // --- CÁLCULO DE ALINEACIÓN ---
+    if (size == 1) {
+      // Mediano (Títulos de sección)
+      font = "0";
+      fontHeight = isWidePaper ? 4 : 2; // Tamaño de fuente
+      charWidth = isWidePaper ? 16 : 10; // Ancho promedio por carácter
+    } else if (size == 2) {
+      // Grande (Encabezados/Factura)
+      font = "4"; // Fuente más negrita
+      fontHeight = 1;
+      charWidth = isWidePaper ? 24 : 18;
+    } else {
+      // Normal (Productos/Precios)
+      font = "7";
+      fontHeight = 0;
+      charWidth = isWidePaper ? 12 : 8;
+    }
+
+    // 2. Cálculo preciso de X para alineación
+    int xPos = 0;
+    int estimatedTextWidth = text.length * charWidth;
+
     if (align == 1) {
       // Centro
-      int textWidth = text.length * charWidth;
-      xPos = (paperWidth - textWidth) ~/ 2;
+      xPos = (paperWidth - estimatedTextWidth) ~/ 2;
     } else if (align == 2) {
       // Derecha
-      int textWidth = text.length * charWidth;
-      xPos = paperWidth - textWidth - 10;
+      xPos = paperWidth - estimatedTextWidth - 5;
     }
 
     if (xPos < 0) xPos = 0;
 
-    final command = "TEXT $font $fontSize $xPos $_currentY $text\r\n";
+    // El comando SETMAG escala la fuente (Ancho, Alto)
+    // Solo lo aplicamos si es mediano/grande
+    if (size > 0) {
+      String mag = "SETMAG ${size + 1} ${size + 1}\r\n";
+      _bytes.addAll(mag.codeUnits);
+    } else {
+      _bytes.addAll("SETMAG 0 0\r\n".codeUnits);
+    }
+
+    final command = "TEXT $font $fontHeight $xPos $_currentY $text\r\n";
     _bytes.addAll(command.codeUnits);
 
-    // Incrementar Y según el tamaño
-    _currentY += (size == 1) ? 90 : 45;
+    // 3. Incremento de Y dinámico
+    // El incremento debe ser mayor al alto de la fuente elegida
+    int rowHeight = (size == 0) ? 35 : (size == 1 ? 60 : 80);
+    _currentY += isWidePaper ? (rowHeight * 1.2).toInt() : rowHeight;
   }
 
   @override
   void addImage(Uint8List imageBytes) {
-    // 1. Usamos el paperWidth parametrizado
-    int widthInDots = paperWidth;
-
-    // 2. Calculamos el ancho en bytes (8 píxeles por cada byte)
-    int byteWidth = widthInDots ~/ 8;
-
-    // 3. Calculamos el alto de la imagen
-    // Evitamos división por cero si byteWidth no es correcto
+    // CPCL requiere que el ancho en bytes sea múltiplo de 8 para alineación
+    int byteWidth = paperWidth ~/ 8;
     if (byteWidth <= 0) return;
+
     int height = imageBytes.length ~/ byteWidth;
 
-    // 4. Construimos el comando EG
-    // Usamos x=0 para que ocupe todo el ancho del papel
+    // Comando CG (Compressed Graphics) o EG (Expanded Graphics)
     String command = "EG $byteWidth $height 0 $_currentY ";
 
     _bytes.addAll(command.codeUnits);
@@ -71,19 +95,23 @@ class CpclTranslator extends PrinterTranslator {
 
   @override
   void addCut() {
-    // 5. El encabezado debe indicar la resolución horizontal (paperWidth)
-    // El formato es: ! {offset} {res_horizontal} {res_vertical} {alto_total} {cantidad}
-    int totalHeight = _currentY + 50;
+    // Importante: El totalHeight debe ser preciso para no desperdiciar papel
+    int totalHeight = _currentY + 40;
 
-    // Usamos paperWidth para que la impresora sepa el ancho físico
+    // Cabecera CPCL estándar
+    // ! {offset} {h-res} {v-res} {height} {qty}
     String header = "! 0 200 200 $totalHeight 1\r\n";
 
-    _bytes.insertAll(0, header.codeUnits);
+    // Configuración de alineación global a la izquierda por defecto
+    String setup = "LEFT\r\n";
+
+    _bytes.insertAll(0, (header + setup).codeUnits);
     _bytes.addAll("FORM\r\nPRINT\r\n".codeUnits);
   }
 
   @override
   void addNewLine() {
-    _currentY += 45;
+    // Salto de línea proporcional al papel
+    _currentY += (paperWidth > 400) ? 50 : 35;
   }
 }

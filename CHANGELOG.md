@@ -18,6 +18,8 @@ ajust font size zpl translator
 
 ajust font size esc pos translator
 
+## 0.0.12
 
+ajust font size esc pos translator
 
 
