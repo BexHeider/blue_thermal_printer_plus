@@ -10,4 +10,9 @@ Refactor: Rename `printReceipt` to `print`, add `paperCut` support, and enhance 
 
 Add support for image printing in CPCL, ESC/POS, and ZPL translators.
 
+## 0.0.10
+
+ajust font size zpl translator
+
+
 

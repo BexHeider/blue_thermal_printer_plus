@@ -24,10 +24,10 @@ class ZplTranslator extends PrinterTranslator {
     int increment = _lineHeight;
 
     if (size == 1) {
-      fontSize = "^CF0,45,45";
+      fontSize = "^CF0,25,25";
       increment = 60;
     } else if (size == 2) {
-      fontSize = "^CF0,60,60";
+      fontSize = "^CF0,40,40";
       increment = 80;
     }
 
