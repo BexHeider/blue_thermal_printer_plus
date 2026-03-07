@@ -125,6 +125,8 @@ class ZplTranslator extends PrinterTranslator {
     // Ajustamos el salto de línea (Y) proporcionalmente al tamaño del QR.
     // Como el QR de la DIAN es denso (aprox 40x40 módulos),
     // multiplicarlo por 35 te da un espaciado casi perfecto.
-    _currentY += (qrSize * 35);
+    _currentY += (qrSize * 65);
+
+    _currentY += 20;
   }
 }

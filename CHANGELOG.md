@@ -34,3 +34,8 @@ add support for qr code printing
 
 ajust qr code size
 
+## 0.0.16
+
+ajust qr code size
+
+

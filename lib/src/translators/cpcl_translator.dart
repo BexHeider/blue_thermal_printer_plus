@@ -143,6 +143,8 @@ class CpclTranslator extends PrinterTranslator {
     String command = "QRCODE $qrSize 50 $_currentY $text\r\n";
     _bytes.addAll(command.codeUnits);
 
-    _currentY += (qrSize * 35);
+    _currentY += (qrSize * 65);
+
+    _currentY += 20;
   }
 }
