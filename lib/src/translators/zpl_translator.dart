@@ -91,4 +91,31 @@ class ZplTranslator extends PrinterTranslator {
 
     _currentY += height + 20;
   }
+
+  @override
+  void addBarcode(String text) {
+    // ^BY: Define el ancho de los módulos (X, Y) y la relación de aspecto.
+    // ^BC: Código de Barras 128
+    // ^FS: Fin del campo
+    _buffer.write("^BY2,2,100");
+    _buffer.write("^FO0,$_currentY");
+    _buffer.write("^BCN,100,Y,N,N");
+    _buffer.write("^FD");
+    _buffer.write(text);
+    _buffer.write("^FS");
+    _currentY += 120;
+  }
+
+  @override
+  void addQrCode(String text) {
+    // ^BQN: Código QR
+    // M: Nivel de corrección de errores (M = 15%)
+    // 10: Tamaño del módulo
+    _buffer.write("^FO0,$_currentY");
+    _buffer.write("^BQN,M,10");
+    _buffer.write("^FDQA");
+    _buffer.write(text);
+    _buffer.write("^FS");
+    _currentY += 150;
+  }
 }

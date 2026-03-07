@@ -114,4 +114,31 @@ class CpclTranslator extends PrinterTranslator {
     // Salto de línea proporcional al papel
     _currentY += (paperWidth > 400) ? 50 : 35;
   }
+
+  @override
+  void addBarcode(String text) {
+    // CPCL usa el comando BARCODE
+    // Formato: BARCODE-S {tipo} {altura} {posición-x} {posición-y} {texto}
+    // Tipo 1 = Code 128
+    // Altura: 100 dots
+    // Posición: 50 (centrado horizontalmente)
+
+    String command = "BARCODE-S 1 100 50 $_currentY $text\r\n";
+    _bytes.addAll(command.codeUnits);
+
+    _currentY += 120; // Espacio para el código y el texto inferior
+  }
+
+  @override
+  void addQrCode(String text) {
+    // CPCL usa el comando QRCODE
+    // Formato: QRCODE {tamaño-módulo} {posición-x} {posición-y} {texto}
+    // Tamaño módulo: 4 (aprox 100x100 dots)
+    // Posición: 50 (centrado horizontalmente)
+
+    String command = "QRCODE 4 50 $_currentY $text\r\n";
+    _bytes.addAll(command.codeUnits);
+
+    _currentY += 150; // Espacio para el código QR
+  }
 }

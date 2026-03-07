@@ -101,4 +101,47 @@ class EscPosTranslator extends PrinterTranslator {
     _bytes.addAll(imageBytes);
     _bytes.add(0x0A);
   }
+
+  @override
+  void addBarcode(String text) {
+    // 1. Seleccionar modo de código de barras (GS w n)
+    _bytes.addAll([0x1D, 0x77, 0x02]); // Ancho 2
+    _bytes.addAll([0x1D, 0x68, 0x64]); // Altura 100
+
+    // 2. Imprimir código de barras (GS H n)
+    _bytes.addAll([0x1D, 0x48, 0x02]); // Mostrar texto abajo
+
+    // 3. Comando de impresión
+    _bytes.addAll([0x1D, 0x6B, 0x04]); // Tipo 4 (Code 128)
+    _bytes.addAll(text.codeUnits);
+    _bytes.add(0x00); // Terminador
+
+    _bytes.add(0x0A);
+  }
+
+  @override
+  void addQrCode(String text) {
+    // 1. Inicializar QR (GS ( k n)
+    // n=48 para QR Code
+    _bytes.addAll([0x1D, 0x28, 0x6B, 0x04, 0x00, 0x31, 0x41, 0x32, 0x00]);
+
+    // 2. Definir tamaño (GS ( k n)
+    // n = tamaño del módulo * 4
+    int moduleSize = 4;
+    _bytes.addAll([0x1D, 0x28, 0x6B, 0x03, 0x00, 0x31, 0x43, moduleSize]);
+
+    // 3. Definir corrección de errores (GS ( k n)
+    // n=48 (M), 49 (Q), 50 (H)
+    _bytes.addAll([0x1D, 0x28, 0x6B, 0x03, 0x00, 0x31, 0x45, 0x30]);
+
+    // 4. Cargar datos
+    _bytes.addAll([0x1D, 0x28, 0x6B, 0x02, 0x00, 0x31, 0x47]);
+    _bytes.addAll(text.codeUnits);
+    _bytes.add(0x00);
+
+    // 5. Imprimir
+    _bytes.addAll([0x1D, 0x28, 0x6B, 0x03, 0x00, 0x31, 0x51, 0x30]);
+
+    _bytes.add(0x0A);
+  }
 }

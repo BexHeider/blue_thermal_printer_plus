@@ -67,6 +67,12 @@ class BlueThermalPrinterPlus {
         case PrintItemType.image:
           translator.addImage(item.imageBytes!);
           break;
+        case PrintItemType.barcode:
+          translator.addBarcode(item.text!);
+          break;
+        case PrintItemType.qrCode:
+          translator.addQrCode(item.text!);
+          break;
         case PrintItemType.newLine:
           translator.addNewLine();
           break;

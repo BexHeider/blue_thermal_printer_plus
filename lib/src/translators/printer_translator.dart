@@ -7,8 +7,9 @@ abstract class PrinterTranslator {
   void addText(String text, {int size = 0, int align = 0});
   void addNewLine();
   void addImage(Uint8List imageBytes);
+  void addBarcode(String text);
+  void addQrCode(String text);
   void addCut();
-
   // Limpia el buffer para una nueva impresión
   void reset();
 }
