@@ -30,3 +30,7 @@ add support for barcode and qr code printing
 
 add support for qr code printing
 
+## 0.0.15
+
+ajust qr code size
+

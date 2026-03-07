@@ -107,15 +107,24 @@ class ZplTranslator extends PrinterTranslator {
   }
 
   @override
-  void addQrCode(String text) {
-    // ^BQN: Código QR
-    // M: Nivel de corrección de errores (M = 15%)
-    // 10: Tamaño del módulo
+  void addQrCode(String text, {int qrSize = 5}) {
+    // qrSize: Factor de magnificación (1 a 10).
+    // Para papel de 58mm, un valor de 4 o 5 es ideal.
+    // Para papel de 80mm, puedes usar 6 o 7.
+
+    // ^BQN,2,size -> N = Normal, 2 = Modelo 2 (Recomendado), size = tamaño
     _buffer.write("^FO0,$_currentY");
-    _buffer.write("^BQN,M,10");
-    _buffer.write("^FDQA");
+    _buffer.write("^BQN,2,$qrSize");
+
+    // ^FDQA, -> Q = Nivel de corrección (25%), A = Automático.
+    // ¡Debe llevar la coma antes del texto!
+    _buffer.write("^FDQA,");
     _buffer.write(text);
     _buffer.write("^FS");
-    _currentY += 150;
+
+    // Ajustamos el salto de línea (Y) proporcionalmente al tamaño del QR.
+    // Como el QR de la DIAN es denso (aprox 40x40 módulos),
+    // multiplicarlo por 35 te da un espaciado casi perfecto.
+    _currentY += (qrSize * 35);
   }
 }

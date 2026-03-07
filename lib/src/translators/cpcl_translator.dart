@@ -130,15 +130,19 @@ class CpclTranslator extends PrinterTranslator {
   }
 
   @override
-  void addQrCode(String text) {
+  void addQrCode(String text, {int qrSize = 5}) {
     // CPCL usa el comando QRCODE
     // Formato: QRCODE {tamaño-módulo} {posición-x} {posición-y} {texto}
     // Tamaño módulo: 4 (aprox 100x100 dots)
     // Posición: 50 (centrado horizontalmente)
 
-    String command = "QRCODE 4 50 $_currentY $text\r\n";
+    // qrSize: Factor de magnificación (1 a 10).
+    // Para papel de 58mm, un valor de 4 o 5 es ideal.
+    // Para papel de 80mm, puedes usar 6 o 7.
+
+    String command = "QRCODE $qrSize 50 $_currentY $text\r\n";
     _bytes.addAll(command.codeUnits);
 
-    _currentY += 150; // Espacio para el código QR
+    _currentY += (qrSize * 35);
   }
 }

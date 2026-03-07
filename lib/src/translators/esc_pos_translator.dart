@@ -120,15 +120,18 @@ class EscPosTranslator extends PrinterTranslator {
   }
 
   @override
-  void addQrCode(String text) {
+  void addQrCode(String text, {int qrSize = 5}) {
     // 1. Inicializar QR (GS ( k n)
     // n=48 para QR Code
     _bytes.addAll([0x1D, 0x28, 0x6B, 0x04, 0x00, 0x31, 0x41, 0x32, 0x00]);
 
     // 2. Definir tamaño (GS ( k n)
     // n = tamaño del módulo * 4
-    int moduleSize = 4;
-    _bytes.addAll([0x1D, 0x28, 0x6B, 0x03, 0x00, 0x31, 0x43, moduleSize]);
+
+    // qrSize: Factor de magnificación (1 a 10).
+    // Para papel de 58mm, un valor de 4 o 5 es ideal.
+    // Para papel de 80mm, puedes usar 6 o 7.
+    _bytes.addAll([0x1D, 0x28, 0x6B, 0x03, 0x00, 0x31, 0x43, qrSize]);
 
     // 3. Definir corrección de errores (GS ( k n)
     // n=48 (M), 49 (Q), 50 (H)
