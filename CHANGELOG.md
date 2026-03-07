@@ -26,3 +26,7 @@ ajust font size esc pos translator
 
 add support for barcode and qr code printing
 
+## 0.0.14
+
+add support for qr code printing
+

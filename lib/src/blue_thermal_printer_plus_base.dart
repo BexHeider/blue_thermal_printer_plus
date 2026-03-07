@@ -79,8 +79,6 @@ class BlueThermalPrinterPlus {
         case PrintItemType.paperCut:
           translator.addCut();
           break;
-        default:
-          break;
       }
     }
 

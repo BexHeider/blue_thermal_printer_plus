@@ -160,7 +160,12 @@ class _MyAppState extends State<MyApp> {
                         child: const Text("Imprimir Ticket de Prueba"),
                       ),
                       ElevatedButton(
-                        onPressed: () async {},
+                        onPressed: () async {
+                          bool? connected = await bluetooth.isConnected;
+                          if (connected == true) {
+                            _printTestQr();
+                          }
+                        },
                         child: const Text("Imprimir QR"),
                       ),
                     ],
@@ -229,6 +234,23 @@ class _MyAppState extends State<MyApp> {
         PrintItem(type: PrintItemType.newLine),
         PrintItem.text("Gracias por su compra", align: 1),
 
+        PrintItem(type: PrintItemType.newLine),
+        PrintItem(type: PrintItemType.paperCut),
+      ];
+
+      // Llamamos al método maestro del paquete
+      await bluetooth.print(items: receipt, protocol: _selectedProtocol);
+    }
+  }
+
+  Future<void> _printTestQr() async {
+    print("Imprimiendo ticket de prueba");
+    // Verificar conexión primero
+    if ((await bluetooth.isConnected) == true) {
+      // Creamos la lista de items (Independiente del lenguaje)
+      List<PrintItem> receipt = [
+        PrintItem(type: PrintItemType.newLine),
+        PrintItem(type: PrintItemType.qrCode, text: "https://flutter.dev"),
         PrintItem(type: PrintItemType.newLine),
         PrintItem(type: PrintItemType.paperCut),
       ];
