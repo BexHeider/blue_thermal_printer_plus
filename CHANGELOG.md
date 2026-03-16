@@ -42,4 +42,6 @@ ajust qr code size
 
 ajust cpcl qr code size
 
+## 0.0.18
 
+add enum for paper size
