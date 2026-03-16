@@ -45,3 +45,7 @@ ajust cpcl qr code size
 ## 0.0.18
 
 add enum for paper size
+
+## 0.0.19
+
+ajust example for ios devices

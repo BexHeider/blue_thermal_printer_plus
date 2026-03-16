@@ -15,6 +15,7 @@ public class BlueThermalPrinterPlusPlugin: NSObject, FlutterPlugin, CBCentralMan
     
     // Variables temporales para el escaneo
     var scannedPeripherals: [String: CBPeripheral] = [:]
+    var scannedNames: [String: String] = [:] // NUEVO: Diccionario para guardar los nombres reales
     
     public static func register(with registrar: FlutterPluginRegistrar) {
         let channel = FlutterMethodChannel(name: "blue_thermal_printer_plus/methods", binaryMessenger: registrar.messenger())
@@ -82,19 +83,42 @@ public class BlueThermalPrinterPlusPlugin: NSObject, FlutterPlugin, CBCentralMan
     
     func startScan(result: @escaping FlutterResult) {
         scannedPeripherals.removeAll()
-        // Escanear por 2 segundos
-        centralManager.scanForPeripherals(withServices: nil, options: nil)
+        scannedNames.removeAll() // Limpiamos los nombres anteriores
         
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
+        // Iniciamos el escaneo
+        centralManager.scanForPeripherals(withServices: nil, options: [CBCentralManagerScanOptionAllowDuplicatesKey: false])
+        
+        // Escanear por 4 segundos para dar tiempo a capturar el advertisementData
+        DispatchQueue.main.asyncAfter(deadline: .now() + 4.0) {
             self.centralManager.stopScan()
+            
             var list = [[String: Any]]()
+            
             for (uuid, peripheral) in self.scannedPeripherals {
+                // Recuperamos el nombre real o caemos al fallback
+                var name = self.scannedNames[uuid] ?? peripheral.name ?? "Unknown"
+
+                if name == "Unknown" {
+                    let shortUUID = String(uuid.prefix(6))
+                    name = "Dispositivo Oculto (\(shortUUID))"
+                }
+                
                 list.append([
-                    "name": peripheral.name ?? "Unknown",
+                    "name": name,
                     "address": uuid, // En iOS usamos el UUID como "address"
                     "type": 0
                 ])
             }
+            
+            // Ordenamos la lista: primero los que tienen nombre, los "Unknown" al final
+            list.sort { dict1, dict2 in
+                let name1 = dict1["name"] as? String ?? ""
+                let name2 = dict2["name"] as? String ?? ""
+                if name1 == "Unknown" && name2 != "Unknown" { return false }
+                if name1 != "Unknown" && name2 == "Unknown" { return true }
+                return name1 < name2
+            }
+            
             result(list)
         }
     }
@@ -146,12 +170,22 @@ public class BlueThermalPrinterPlusPlugin: NSObject, FlutterPlugin, CBCentralMan
     // MARK: - CBCentralManagerDelegate
     
     public func centralManagerDidUpdateState(_ central: CBCentralManager) {
-        // Enviar evento de estado a Dart si es necesario
+        // Enviar evento de estado a Dart si es necesario a través del EventSink
     }
     
     public func centralManager(_ central: CBCentralManager, didDiscover peripheral: CBPeripheral, advertisementData: [String : Any], rssi RSSI: NSNumber) {
-        // Guardamos el periférico usando su UUID como clave
-        scannedPeripherals[peripheral.identifier.uuidString] = peripheral
+        let uuid = peripheral.identifier.uuidString
+        
+        // 1. Extraemos el nombre real del anuncio Bluetooth
+        let incomingName = advertisementData[CBAdvertisementDataLocalNameKey] as? String ?? peripheral.name ?? "Unknown"
+        
+        // 2. Guardamos el periférico para poder conectarnos después
+        scannedPeripherals[uuid] = peripheral
+        
+        // 3. Guardamos el nombre. Si ya teníamos un nombre bueno, evitamos sobrescribirlo con "Unknown"
+        if incomingName != "Unknown" || scannedNames[uuid] == nil {
+            scannedNames[uuid] = incomingName
+        }
     }
     
     public func centralManager(_ central: CBCentralManager, didConnect peripheral: CBPeripheral) {
