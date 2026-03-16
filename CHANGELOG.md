@@ -38,4 +38,8 @@ ajust qr code size
 
 ajust qr code size
 
+## 0.0.17
+
+ajust cpcl qr code size
+
 

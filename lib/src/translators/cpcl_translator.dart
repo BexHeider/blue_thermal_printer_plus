@@ -131,20 +131,30 @@ class CpclTranslator extends PrinterTranslator {
 
   @override
   void addQrCode(String text, {int qrSize = 5}) {
-    // CPCL usa el comando QRCODE
-    // Formato: QRCODE {tamaño-módulo} {posición-x} {posición-y} {texto}
-    // Tamaño módulo: 4 (aprox 100x100 dots)
-    // Posición: 50 (centrado horizontalmente)
+    // CPCL usa el bloque de comando "B QR" (Barcode QR)
+    // Formato:
+    // B QR {x} {y} M 2 U {unit-width}
+    // MA,{datos}
+    // ENDQR
 
-    // qrSize: Factor de magnificación (1 a 10).
-    // Para papel de 58mm, un valor de 4 o 5 es ideal.
-    // Para papel de 80mm, puedes usar 6 o 7.
+    // x: 50 (margen izquierdo)
+    // y: _currentY (posición actual)
+    // M 2: Modelo de QR 2 (estándar).
+    // U qrSize: Tamaño del módulo (magnificación).
+    // MA,: Indica ingreso Manual (M) y Alfanumérico (A).
 
-    String command = "QRCODE $qrSize 50 $_currentY $text\r\n";
+    String command =
+        "B QR 50 $_currentY M 2 U $qrSize\r\n"
+        "MA,$text\r\n"
+        "ENDQR\r\n";
+
     _bytes.addAll(command.codeUnits);
 
+    // Ajuste de altura estimado.
+    // Un código QR estándar de versión 3/4 mide aprox 33 módulos de alto.
+    // Modificamos el 65 por un número más realista (35-40), pero puedes
+    // ajustarlo a prueba y error dependiendo de cuánta data tenga tu QR.
     _currentY += (qrSize * 65);
-
-    _currentY += 20;
+    _currentY += 20; // Margen inferior extra
   }
 }
