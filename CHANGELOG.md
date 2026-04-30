@@ -49,3 +49,8 @@ add enum for paper size
 ## 0.0.19
 
 ajust example for ios devices
+
+## 0.0.20
+
+ajust paper cut
+

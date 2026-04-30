@@ -37,8 +37,6 @@ class BlueThermalPrinterPlus {
     required PrinterProtocol protocol,
     int widthDots = 384,
   }) async {
-    debugPrint("Protocolo: $protocol");
-
     // 1. Seleccionar el traductor según el protocolo configurado
     PrinterTranslator translator;
     switch (protocol) {
@@ -58,7 +56,6 @@ class BlueThermalPrinterPlus {
     translator.reset();
 
     for (var item in items) {
-      debugPrint("Item: ${item.type}");
       switch (item.type) {
         case PrintItemType.text:
           translator.addText(item.text!, size: item.size, align: item.align);
@@ -83,7 +80,6 @@ class BlueThermalPrinterPlus {
 
     // 3. Enviar los bytes finales al hardware a través del Manager
     final finalBytes = Uint8List.fromList(translator.bytes);
-    debugPrint("Bytes finales: ${finalBytes.length}");
     await _manager.writeBytes(finalBytes);
   }
 }

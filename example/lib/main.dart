@@ -213,7 +213,6 @@ class _MyAppState extends State<MyApp> {
 
   // --- LÓGICA DE IMPRESIÓN DE PRUEBA ---
   Future<void> _printTestTicket() async {
-    print("Imprimiendo ticket de prueba");
     // Verificar conexión primero
     if ((await bluetooth.isConnected) == true) {
       // Creamos la lista de items (Independiente del lenguaje)
@@ -244,7 +243,6 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> _printTestQr() async {
-    print("Imprimiendo ticket de prueba");
     // Verificar conexión primero
     if ((await bluetooth.isConnected) == true) {
       // Creamos la lista de items (Independiente del lenguaje)

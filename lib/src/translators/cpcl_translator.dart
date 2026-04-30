@@ -96,7 +96,7 @@ class CpclTranslator extends PrinterTranslator {
   @override
   void addCut() {
     // Importante: El totalHeight debe ser preciso para no desperdiciar papel
-    int totalHeight = _currentY + 40;
+    int totalHeight = _currentY + 20;
 
     // Cabecera CPCL estándar
     // ! {offset} {h-res} {v-res} {height} {qty}
