@@ -58,3 +58,7 @@ ajust paper cut
 
 ajust text size
 
+## 0.0.22
+
+ajust qr code size
+

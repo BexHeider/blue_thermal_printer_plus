@@ -71,6 +71,7 @@ class ZplTranslator extends PrinterTranslator {
 
   @override
   void addCut() {
+    //_buffer.write("^LL100");
     _buffer.write("^XZ");
   }
 

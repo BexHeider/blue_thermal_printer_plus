@@ -74,12 +74,7 @@ class CpclTranslator extends PrinterTranslator {
     // 3. Incremento de Y dinámico
     // El incremento debe ser mayor al alto de la fuente elegida
     int rowHeight = (size == 0) ? 25 : (size == 1 ? 45 : 65);
-
-    debugPrint("rowHeight: $rowHeight");
-
     _currentY += isWidePaper ? (rowHeight * 1.2).toInt() : rowHeight;
-
-    debugPrint("_currentY: $_currentY");
   }
 
   @override
@@ -103,13 +98,11 @@ class CpclTranslator extends PrinterTranslator {
   @override
   void addCut() {
     // Importante: El totalHeight debe ser preciso para no desperdiciar papel
-    int totalHeight = _currentY + 20;
-
-    debugPrint("totalHeight: $totalHeight");
+    int totalHeight = _currentY + 40;
 
     // Cabecera CPCL estándar
     // ! {offset} {h-res} {v-res} {height} {qty}
-    String header = "! 0 300 300 $totalHeight 1\r\n";
+    String header = "! 0 200 200 $totalHeight 1\r\n";
 
     // Configuración de alineación global a la izquierda por defecto
     String setup = "LEFT\r\n";
@@ -163,7 +156,7 @@ class CpclTranslator extends PrinterTranslator {
     // Un código QR estándar de versión 3/4 mide aprox 33 módulos de alto.
     // Modificamos el 65 por un número más realista (35-40), pero puedes
     // ajustarlo a prueba y error dependiendo de cuánta data tenga tu QR.
-    _currentY += (qrSize * 30);
-    _currentY += 20; // Margen inferior extra
+    _currentY += (qrSize * 65);
+    _currentY += 40; // Margen inferior extra
   }
 }
