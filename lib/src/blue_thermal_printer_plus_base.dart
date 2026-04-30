@@ -55,7 +55,12 @@ class BlueThermalPrinterPlus {
     translator.paperWidth = widthDots;
     translator.reset();
 
+    debugPrint("item: $items");
+    debugPrint("protocol: $protocol");
+    debugPrint("widthDots: $widthDots");
+
     for (var item in items) {
+      debugPrint("item: $item");
       switch (item.type) {
         case PrintItemType.text:
           translator.addText(item.text!, size: item.size, align: item.align);

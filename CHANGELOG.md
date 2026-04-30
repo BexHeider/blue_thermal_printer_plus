@@ -54,3 +54,7 @@ ajust example for ios devices
 
 ajust paper cut
 
+## 0.0.21
+
+ajust text size
+

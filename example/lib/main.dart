@@ -222,23 +222,24 @@ class _MyAppState extends State<MyApp> {
         PrintItem.text("Calle Falsa 123", align: 1),
         PrintItem.text("Tel: 555-1234", align: 1),
         PrintItem(type: PrintItemType.newLine),
-
         PrintItem.text("PRODUCTOS", size: 1, align: 0),
         PrintItem.text("-------------------------------", align: 1),
         PrintItem.text("Coca Cola x2        \$5.00", align: 0),
         PrintItem.text("Pizza               \$10.00", align: 0),
         PrintItem.text("-------------------------------", align: 1),
-
         PrintItem.text("TOTAL: \$15.00", size: 1, align: 0),
         PrintItem(type: PrintItemType.newLine),
         PrintItem.text("Gracias por su compra", align: 1),
-
         PrintItem(type: PrintItemType.newLine),
         PrintItem(type: PrintItemType.paperCut),
       ];
 
       // Llamamos al método maestro del paquete
-      await bluetooth.print(items: receipt, protocol: _selectedProtocol);
+      await bluetooth.print(
+        items: receipt,
+        protocol: _selectedProtocol,
+        widthDots: 400,
+      );
     }
   }
 
