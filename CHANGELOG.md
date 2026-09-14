@@ -62,3 +62,7 @@ ajust text size
 
 ajust qr code size
 
+## 0.1.0
+
+Add Swift Package Manager support for iOS (opt-in via `flutter config --enable-swift-package-manager`). CocoaPods integration still supported, no breaking changes for existing consumers.
+
