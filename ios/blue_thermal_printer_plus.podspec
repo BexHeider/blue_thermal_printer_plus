@@ -4,7 +4,7 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'blue_thermal_printer_plus'
-  s.version          = '0.1.0'
+  s.version          = '0.1.1'
   s.summary          = 'Impresión Bluetooth en impresoras térmicas (ESC/POS, ZPL, CPCL).'
   s.description      = <<-DESC
 Plugin de Flutter para imprimir texto, imágenes, QR y códigos de barras en impresoras térmicas Bluetooth.
