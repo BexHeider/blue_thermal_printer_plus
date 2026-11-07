@@ -7,4 +7,7 @@
 
     <uses-permission android:name="android.permission.BLUETOOTH_CONNECT" />
     <uses-permission android:name="android.permission.BLUETOOTH_SCAN" />
+
+    <!-- USB host (OTG) es opcional: la app sigue instalable en equipos sin él -->
+    <uses-feature android:name="android.hardware.usb.host" android:required="false" />
 </manifest>

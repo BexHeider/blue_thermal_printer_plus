@@ -1,3 +1,11 @@
+## 0.2.0
+
+* Impresión por red (WiFi/Ethernet): `connectNetwork(host, port: 9100)` con socket TCP crudo. Android e iOS.
+* Impresión por cable USB (host/OTG), solo Android: `getUsbDevices()` y `connectUsb(device)`.
+* `print()` envía por la conexión activa (Bluetooth, red o USB); `disconnect()` e `isConnected` la respetan.
+* API de imágenes: `PrintItem.imageFile(bytes)` decodifica PNG/JPG/WebP/GIF, ajusta al ancho del papel (`widthDots`) y tramea a 1 bit. `PrintItem.image` (bitmap crudo) sigue igual.
+* Nuevo valor `PrintItemType.encodedImage`.
+
 ## 0.0.7
 
 Update version to 0.0.7 in pubspec.yaml, correct original work attribution in LICENSE, and remove unused thermal printer test file. Clean up debug print statements in main.dart for improved code clarity.

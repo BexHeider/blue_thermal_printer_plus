@@ -164,6 +164,12 @@ class BlueThermalPrinterPlusPlugin : FlutterPlugin, ActivityAware, MethodCallHan
     override fun onMethodCall(@NonNull call: MethodCall, @NonNull rawResult: Result) {
         val result = MethodResultWrapper(rawResult)
 
+        // USB no depende de Bluetooth: se atiende antes de validar el adaptador.
+        if (call.method.startsWith("usb")) {
+            handleUsb(call, result)
+            return
+        }
+
         if (mBluetoothAdapter == null && "isAvailable" != call.method) {
             result.error("bluetooth_unavailable", "the device does not have bluetooth", null)
             return
@@ -345,6 +351,32 @@ class BlueThermalPrinterPlusPlugin : FlutterPlugin, ActivityAware, MethodCallHan
             return true
         }
         return false
+    }
+
+    private var usbPrinter: UsbPrinter? = null
+
+    private fun handleUsb(call: MethodCall, result: Result) {
+        val ctx = context
+        if (ctx == null) {
+            result.error("usb_error", "Plugin no adjunto a una actividad", null)
+            return
+        }
+        val usb = usbPrinter ?: UsbPrinter(ctx).also { usbPrinter = it }
+        when (call.method) {
+            "usbGetDevices" -> result.success(usb.list())
+            "usbConnect" -> {
+                val name = call.argument<String>("deviceName")
+                if (name != null) usb.connect(name, result)
+                else result.error("invalid_argument", "argument 'deviceName' not found", null)
+            }
+            "usbWrite" -> {
+                val data = call.argument<ByteArray>("message")
+                if (data != null) usb.write(data, result)
+                else result.error("invalid_argument", "argument 'message' not found", null)
+            }
+            "usbDisconnect" -> { usb.close(); result.success(true) }
+            else -> result.notImplemented()
+        }
     }
 
     private fun state(result: Result) {

@@ -68,3 +68,25 @@ En iOS agrega a tu `Info.plist` las claves `NSBluetoothAlwaysUsageDescription` y
 ## Licencia
 
 Ver [LICENSE](LICENSE).
+
+
+## Red (WiFi) y USB (0.2.0)
+
+```dart
+final printer = BlueThermalPrinterPlus();
+
+// WiFi / Ethernet (puerto RAW 9100) — Android e iOS
+await printer.connectNetwork('192.168.1.50');
+
+// Cable USB (OTG) — solo Android
+final usb = await printer.getUsbDevices();
+await printer.connectUsb(usb.first); // pide permiso al usuario
+
+// Imagen PNG/JPG: el paquete la ajusta al papel y la convierte a 1 bit
+final bytes = await File(path).readAsBytes();
+await printer.print(
+  items: [PrintItem.imageFile(bytes), PrintItem.text('Gracias'), PrintItem(type: PrintItemType.paperCut)],
+  protocol: PrinterProtocol.escPos,
+  widthDots: 576, // 384 = 58 mm, 576 = 80 mm, 832 = 110 mm
+);
+```

@@ -1,3 +1,5 @@
+import 'dart:async';
+import 'dart:io';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:blue_thermal_printer_plus/blue_thermal_printer_plus.dart';
@@ -139,5 +141,25 @@ void main() {
     expect(text, startsWith('^XA'));
     expect(text, contains('Hola'));
     expect(text, endsWith('^XZ'));
+  });
+
+  test('connectNetwork envía los bytes por el socket TCP', () async {
+    final server = await ServerSocket.bind(InternetAddress.loopbackIPv4, 0);
+    final received = <int>[];
+    final done = Completer<void>();
+    server.listen((c) {
+      c.listen(received.addAll, onDone: done.complete);
+    });
+    await printer.connectNetwork('127.0.0.1', port: server.port);
+    expect(await printer.isConnected, isTrue);
+    await printer.print(
+      items: [PrintItem.text('HOLA')],
+      protocol: PrinterProtocol.escPos,
+    );
+    await printer.disconnect();
+    await done.future.timeout(const Duration(seconds: 5));
+    await server.close();
+    expect(String.fromCharCodes(received), contains('HOLA'));
+    expect(log.where((c) => c.method == 'writeBytes'), isEmpty);
   });
 }

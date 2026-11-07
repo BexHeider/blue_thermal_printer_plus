@@ -40,4 +40,14 @@ class PrintItem {
       width: width,
     );
   }
+
+  /// Imagen PNG/JPG/WebP/GIF tal cual viene de un archivo. El paquete la
+  /// decodifica, la ajusta al ancho del papel y la convierte a blanco y negro.
+  factory PrintItem.imageFile(Uint8List encodedBytes, {int align = 1}) {
+    return PrintItem(
+      imageBytes: encodedBytes,
+      type: PrintItemType.encodedImage,
+      align: align,
+    );
+  }
 }

@@ -3,6 +3,8 @@ library;
 // Exponemos los modelos que el usuario necesita llenar
 export 'src/models/bluetooth_device.dart';
 export 'src/models/print_item.dart';
+export 'src/models/usb_device.dart';
+export 'src/utils/image_rasterizer.dart';
 
 // Exponemos los Enums de configuración
 export 'src/utils/printer_enums.dart';
