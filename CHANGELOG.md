@@ -1,3 +1,9 @@
+## 0.2.1
+
+* Android: AGP 9.1, Kotlin 2.4, `compileSdk 36` (no obliga a las apps a compilar contra 37). Se elimina `kotlin-stdlib-jdk7`.
+* iOS: mínimo 15.0.
+* Example actualizado: selector Bluetooth / WiFi / USB, papel, protocolo e impresión de imagen PNG.
+
 ## 0.2.0
 
 * Impresión por red (WiFi/Ethernet): `connectNetwork(host, port: 9100)` con socket TCP crudo. Android e iOS.

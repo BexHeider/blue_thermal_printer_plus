@@ -90,3 +90,8 @@ await printer.print(
   widthDots: 576, // 384 = 58 mm, 576 = 80 mm, 832 = 110 mm
 );
 ```
+
+### Requisitos de plataforma (0.2.0)
+
+- iOS 15.0 o superior. Para WiFi agrega `NSLocalNetworkUsageDescription` a tu `Info.plist` (iOS pide permiso de red local).
+- Android: `minSdk 24`; la app necesita el permiso `INTERNET` para WiFi. USB host (OTG) es opcional (`android.hardware.usb.host`, `required=false`).

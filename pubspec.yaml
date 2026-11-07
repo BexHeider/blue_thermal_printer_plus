@@ -1,6 +1,6 @@
 name: blue_thermal_printer_plus
 description: "Plugin para impresoras térmicas Bluetooth en Android e iOS. Imprime texto, imágenes, QR y códigos de barras en ESC/POS, ZPL y CPCL."
-version: 0.2.0
+version: 0.2.1
 homepage: https://github.com/BexHeider/blue_thermal_printer_plus
 repository: https://github.com/BexHeider/blue_thermal_printer_plus
 topics:

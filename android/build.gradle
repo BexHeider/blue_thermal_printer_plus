@@ -2,14 +2,14 @@ group = "com.bexsoluciones.blue_thermal_printer_plus"
 version = "1.0-SNAPSHOT"
 
 buildscript {
-    ext.kotlin_version = "2.2.20"
+    ext.kotlin_version = "2.4.0"
     repositories {
         google()
         mavenCentral()
     }
 
     dependencies {
-        classpath("com.android.tools.build:gradle:8.11.1")
+        classpath("com.android.tools.build:gradle:9.1.0")
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version")
     }
 }
@@ -24,6 +24,12 @@ allprojects {
 apply plugin: "com.android.library"
 apply plugin: "kotlin-android"
 
+kotlin {
+    compilerOptions {
+        jvmTarget.set(org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17)
+    }
+}
+
 android {
     namespace = "com.bexsoluciones.blue_thermal_printer_plus"
 
@@ -32,10 +38,6 @@ android {
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_17
         targetCompatibility = JavaVersion.VERSION_17
-    }
-
-    kotlinOptions {
-        jvmTarget = JavaVersion.VERSION_17
     }
 
     sourceSets {
@@ -50,9 +52,6 @@ android {
     dependencies {
         testImplementation("org.jetbrains.kotlin:kotlin-test")
         testImplementation("org.mockito:mockito-core:5.0.0")
-        // Estas son las librerías obligatorias para que funcione el código QR y Bitmap
-        implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-        
         // Librería para generar códigos QR (ZXing)
         implementation 'com.google.zxing:core:3.4.1'
         implementation 'com.journeyapps:zxing-android-embedded:4.3.0'

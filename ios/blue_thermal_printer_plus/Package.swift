@@ -3,7 +3,7 @@ import PackageDescription
 
 let package = Package(
     name: "blue_thermal_printer_plus",
-    platforms: [.iOS("13.0")],
+    platforms: [.iOS("15.0")],
     products: [
         .library(name: "blue-thermal-printer-plus", targets: ["blue_thermal_printer_plus"])
     ],
