@@ -1,4 +1,4 @@
-import 'package:flutter/foundation.dart';
+import 'dart:typed_data';
 
 import 'platforms/bluetooth_manager.dart';
 import 'models/bluetooth_device.dart';
@@ -55,12 +55,8 @@ class BlueThermalPrinterPlus {
     translator.paperWidth = widthDots;
     translator.reset();
 
-    debugPrint("item: $items");
-    debugPrint("protocol: $protocol");
-    debugPrint("widthDots: $widthDots");
 
     for (var item in items) {
-      debugPrint("item: $item");
       switch (item.type) {
         case PrintItemType.text:
           translator.addText(item.text!, size: item.size, align: item.align);

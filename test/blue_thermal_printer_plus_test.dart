@@ -45,7 +45,7 @@ void main() {
           ];
         case 'connect':
           return true;
-        case 'printCustom':
+        case 'writeBytes':
           return true;
         default:
           return null;
@@ -83,19 +83,61 @@ void main() {
     ]);
   });
 
-  test('printCustom envía los argumentos correctos', () async {
-    await printer.print(items: [], protocol: PrinterProtocol.escPos);
+  bool containsSeq(List<int> data, List<int> seq) {
+    for (var i = 0; i <= data.length - seq.length; i++) {
+      var ok = true;
+      for (var j = 0; j < seq.length; j++) {
+        if (data[i + j] != seq[j]) {
+          ok = false;
+          break;
+        }
+      }
+      if (ok) return true;
+    }
+    return false;
+  }
 
-    expect(log, <Matcher>[
-      isMethodCall(
-        'printCustom',
-        arguments: {
-          'message': 'Hola Mundo',
-          'size': 1,
-          'align': 1,
-          'charset': 'UTF-8', // Valor por defecto
-        },
-      ),
-    ]);
+  Uint8List sentBytes() =>
+      (log.single.arguments as Map)['message'] as Uint8List;
+
+  test('print ESC/POS envía el texto con writeBytes', () async {
+    await printer.print(
+      items: [PrintItem.text('Hola')],
+      protocol: PrinterProtocol.escPos,
+    );
+
+    expect(log.single.method, 'writeBytes');
+    final bytes = sentBytes();
+    expect(containsSeq(bytes, [0x1B, 0x40]), isTrue); // ESC @
+    expect(containsSeq(bytes, 'Hola'.codeUnits), isTrue);
+  });
+
+  test('print ESC/POS imagen usa GS v 0 con el ancho del papel', () async {
+    await printer.print(
+      items: [PrintItem.image(Uint8List(48 * 2))],
+      protocol: PrinterProtocol.escPos,
+      widthDots: 384,
+    );
+
+    // 384 dots = 48 bytes por fila; 96 bytes = 2 filas.
+    expect(
+      containsSeq(sentBytes(), [0x1D, 0x76, 0x30, 0x00, 48, 0, 2, 0]),
+      isTrue,
+    );
+  });
+
+  test('print ZPL envía una etiqueta ^XA ... ^XZ', () async {
+    await printer.print(
+      items: [
+        PrintItem.text('Hola'),
+        PrintItem(type: PrintItemType.paperCut),
+      ],
+      protocol: PrinterProtocol.zpl,
+    );
+
+    final text = String.fromCharCodes(sentBytes());
+    expect(text, startsWith('^XA'));
+    expect(text, contains('Hola'));
+    expect(text, endsWith('^XZ'));
   });
 }

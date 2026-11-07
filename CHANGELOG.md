@@ -64,5 +64,8 @@ ajust qr code size
 
 ## 0.1.0
 
-Add Swift Package Manager support for iOS (opt-in via `flutter config --enable-swift-package-manager`). CocoaPods integration still supported, no breaking changes for existing consumers.
-
+- Soporte de Swift Package Manager para iOS (opcional con `flutter config --enable-swift-package-manager`); CocoaPods sigue funcionando, sin cambios incompatibles.
+- Se elimina la dependencia `image`, que no se usaba.
+- Se quitan los `debugPrint` de `print()`.
+- README completo y metadatos de iOS (podspec) actualizados.
+- Pruebas actualizadas a la API actual (`print` → `writeBytes`).

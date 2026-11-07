@@ -4,12 +4,12 @@
 #
 Pod::Spec.new do |s|
   s.name             = 'blue_thermal_printer_plus'
-  s.version          = '0.0.1'
-  s.summary          = 'A new Flutter plugin project.'
+  s.version          = '0.1.0'
+  s.summary          = 'Impresión Bluetooth en impresoras térmicas (ESC/POS, ZPL, CPCL).'
   s.description      = <<-DESC
-A new Flutter plugin project.
+Plugin de Flutter para imprimir texto, imágenes, QR y códigos de barras en impresoras térmicas Bluetooth.
                        DESC
-  s.homepage         = 'http://example.com'
+  s.homepage         = 'https://github.com/BexHeider/blue_thermal_printer_plus'
   s.license          = { :file => '../LICENSE' }
   s.author           = { 'Bex Soluciones' => 'heider.zapa@bexsoluciones.com' }
   s.source           = { :path => '.' }
